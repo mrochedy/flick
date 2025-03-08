@@ -1,35 +1,66 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+
+import db from "./db";
+
+const queryClient = new QueryClient();
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <QueryClientProvider client={queryClient}>
+      <NotesApp />
+    </QueryClientProvider>
+  );
 }
 
-export default App
+function NotesApp() {
+  interface Note {
+    id: number;
+    title: string;
+    content: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+
+  interface RawNote {
+    id: number;
+    title: string;
+    content: string;
+    created_at: Date;
+    updated_at: Date;
+  }
+
+  const {
+    data: notes,
+    isLoading,
+    error,
+  } = useQuery<Note[]>({
+    queryKey: ["notes"],
+    queryFn: () =>
+      db.get("/notes/").then((res) =>
+        res.data.map((note: RawNote) => ({
+          ...note,
+          createdAt: note.created_at,
+          updatedAt: note.updated_at,
+        }))
+      ),
+  });
+
+  if (isLoading) return <div>Chargement...</div>;
+  if (error) return <div>Erreur: {error.message}</div>;
+
+  return (
+    <div>
+      <h1>Notes</h1>
+      {notes?.map((note) => (
+        <div key={note.id}>
+          <h2>{note.title}</h2>
+          <p>{note.content}</p>
+          <p>{note.createdAt.toLocaleString()}</p>
+          <p>{note.updatedAt.toLocaleString()}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default App;
