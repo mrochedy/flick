@@ -8,10 +8,10 @@ interface Props {
 
 function MinimizedNote({ title, content }: Props) {
   return (
-    <>
+    <div className="minimized-note">
       <MinimizedNoteTitle title={title} />
       <MinimizedNoteContent content={content} />
-    </>
+    </div>
   );
 }
 
