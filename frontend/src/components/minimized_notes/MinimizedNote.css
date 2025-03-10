@@ -1,0 +1,13 @@
+.minimized-note {
+  padding: 0.5rem 8%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.minimized-note:hover {
+  background-color: #f1f1f1;
+}
+
+.minimized-note.selected {
+  background-color: #d9d9d9;
+}
