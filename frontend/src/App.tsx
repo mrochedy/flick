@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-
+import { Note, RawNote, convertRawNote } from "models";
 import db from "./db";
-
+import MinimizedNotesList from "./components/MinimizedNotesList";
 const queryClient = new QueryClient();
 
 function App() {
@@ -13,36 +13,13 @@ function App() {
 }
 
 function NotesApp() {
-  interface Note {
-    id: number;
-    title: string;
-    content: string;
-    createdAt: Date;
-    updatedAt: Date;
-  }
-
-  interface RawNote {
-    id: number;
-    title: string;
-    content: string;
-    created_at: Date;
-    updated_at: Date;
-  }
-
   const {
     data: notes,
     isLoading,
     error,
   } = useQuery<Note[]>({
     queryKey: ["notes"],
-    queryFn: () =>
-      db.get("/notes/").then((res) =>
-        res.data.map((note: RawNote) => ({
-          ...note,
-          createdAt: note.created_at,
-          updatedAt: note.updated_at,
-        }))
-      ),
+    queryFn: () => db.get("/notes/").then((res) => res.data.map((note: RawNote) => convertRawNote(note))),
   });
 
   if (isLoading) return <div>Chargement...</div>;
@@ -50,15 +27,7 @@ function NotesApp() {
 
   return (
     <div>
-      <h1>Notes</h1>
-      {notes?.map((note) => (
-        <div key={note.id}>
-          <h2>{note.title}</h2>
-          <p>{note.content}</p>
-          <p>{note.createdAt.toLocaleString()}</p>
-          <p>{note.updatedAt.toLocaleString()}</p>
-        </div>
-      ))}
+      <MinimizedNotesList notes={notes || []} />
     </div>
   );
 }
