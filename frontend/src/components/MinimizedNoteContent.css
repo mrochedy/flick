@@ -1,8 +1,6 @@
 .minimized-note-content {
-  font-family: "Outfit", sans-serif;
   font-weight: 100;
   font-size: 1.063rem;
-  color: #000000;
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;

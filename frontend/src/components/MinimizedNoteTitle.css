@@ -1,8 +1,6 @@
 .minimized-note-title {
-  font-family: "Outfit", sans-serif;
   font-weight: 700;
   font-size: 1.188rem;
-  color: #000000;
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
