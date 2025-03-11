@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery, useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { Note, RawNote, convertRawNote } from "models";
@@ -29,10 +29,28 @@ function NotesApp() {
   } = useQuery<Note[]>({
     queryKey: ["notes"],
     queryFn: () => db.get("/notes/").then((res) => res.data.map((note: RawNote) => convertRawNote(note))),
+    staleTime: 0,
+  });
+
+  const updateNoteMutation = useMutation({
+    mutationFn: (updatedNote: Note) => {
+      return db.put(`/notes/${updatedNote.id}`, {
+        title: updatedNote.title,
+        content: updatedNote.content,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.refetchQueries({ queryKey: ["notes"] });
+    },
   });
 
   const handleNoteSelect = (noteId: number) => {
     setSelectedNoteId(noteId);
+  };
+
+  const handleNoteSave = (updatedNote: Note) => {
+    updateNoteMutation.mutate(updatedNote);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -43,7 +61,7 @@ function NotesApp() {
   return (
     <div className="app-container">
       <Sidebar notes={notes || []} selectedNoteId={selectedNoteId} onNoteSelect={handleNoteSelect} />
-      <NoteEditor note={selectedNote} />
+      <NoteEditor note={selectedNote} onSave={handleNoteSave} />
     </div>
   );
 }

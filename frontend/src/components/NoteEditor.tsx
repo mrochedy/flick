@@ -6,18 +6,32 @@ import "./NoteEditor.css";
 
 interface Props {
   note: Note | null;
+  onSave: (updatedNote: Note) => void;
 }
 
-const NoteEditor = ({ note }: Props) => {
+const NoteEditor = ({ note, onSave }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [previousNote, setPreviousNote] = useState<Note | null>(null);
 
   useEffect(() => {
-    if (note) {
-      setTitle(note.title || "");
-      setContent(note.content || "");
-    }
+    setTitle(note?.title || "");
+    setContent(note?.content || "");
   }, [note]);
+
+  useEffect(() => {
+    if (note?.id !== previousNote?.id) {
+      if (previousNote && previousNote.id !== null) {
+        onSave({
+          ...previousNote,
+          title,
+          content,
+        });
+      }
+    }
+
+    setPreviousNote(note);
+  }, [note, previousNote, onSave, title, content]);
 
   return (
     <div className="note-editor">
