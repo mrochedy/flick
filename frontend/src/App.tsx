@@ -29,7 +29,6 @@ function NotesApp() {
   } = useQuery<Note[]>({
     queryKey: ["notes"],
     queryFn: () => db.get("/notes/").then((res) => res.data.map((note: RawNote) => convertRawNote(note))),
-    staleTime: 0,
   });
 
   const updateNoteMutation = useMutation({
@@ -40,8 +39,8 @@ function NotesApp() {
       });
     },
     onSuccess: () => {
+      // Invalider la requête pour forcer un rafraîchissement des données
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      queryClient.refetchQueries({ queryKey: ["notes"] });
     },
   });
 
