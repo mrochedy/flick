@@ -31,6 +31,10 @@ function NotesApp() {
     queryFn: () => db.get("/notes/").then((res) => res.data.map((note: RawNote) => convertRawNote(note))),
   });
 
+  const invalidateNotes = () => {
+    queryClient.invalidateQueries({ queryKey: ["notes"] });
+  };
+
   const updateNoteMutation = useMutation({
     mutationFn: (updatedNote: Note) => {
       return db.put(`/notes/${updatedNote.id}`, {
@@ -38,9 +42,19 @@ function NotesApp() {
         content: updatedNote.content,
       });
     },
-    onSuccess: () => {
-      // Invalider la requête pour forcer un rafraîchissement des données
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+    onSuccess: invalidateNotes,
+  });
+
+  const createNoteMutation = useMutation({
+    mutationFn: (data: { title: string; content: string }) => {
+      return db.post("/notes/", {
+        title: data.title,
+        content: data.content,
+      });
+    },
+    onSuccess: (data) => {
+      invalidateNotes();
+      setSelectedNoteId(data.data.id);
     },
   });
 
@@ -48,8 +62,12 @@ function NotesApp() {
     setSelectedNoteId(noteId);
   };
 
-  const handleNoteSave = (updatedNote: Note) => {
-    updateNoteMutation.mutate(updatedNote);
+  const handleNoteSave = (noteToSave: Note) => {
+    updateNoteMutation.mutate(noteToSave);
+  };
+
+  const handleNoteCreate = (title: string, content: string) => {
+    createNoteMutation.mutate({ title, content });
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -60,7 +78,7 @@ function NotesApp() {
   return (
     <div className="app-container">
       <Sidebar notes={notes || []} selectedNoteId={selectedNoteId} onNoteSelect={handleNoteSelect} />
-      <NoteEditor note={selectedNote} onSave={handleNoteSave} />
+      <NoteEditor note={selectedNote} onSave={handleNoteSave} onCreate={handleNoteCreate} />
     </div>
   );
 }

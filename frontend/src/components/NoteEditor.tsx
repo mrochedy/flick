@@ -7,13 +7,17 @@ import "./NoteEditor.css";
 interface Props {
   note: Note | null;
   onSave: (updatedNote: Note) => void;
+  onCreate: (title: string, content: string) => void;
 }
 
-const NoteEditor = ({ note, onSave }: Props) => {
+const NoteEditor = ({ note, onSave, onCreate }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [previousNote, setPreviousNote] = useState<Note | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
+
+  const defaultTitle = "New note";
+  const defaultContent = "Start writing...";
 
   useEffect(() => {
     setTitle(note?.title || "");
@@ -39,6 +43,10 @@ const NoteEditor = ({ note, onSave }: Props) => {
       const titleChanged = title !== note.title;
       const contentChanged = content !== note.content;
       setHasChanges(titleChanged || contentChanged);
+    } else {
+      const titleChanged = title !== "";
+      const contentChanged = content !== "";
+      setHasChanges(titleChanged || contentChanged);
     }
   }, [title, content, note]);
 
@@ -50,11 +58,13 @@ const NoteEditor = ({ note, onSave }: Props) => {
         content,
       });
       setHasChanges(false);
+    } else if (hasChanges) {
+      onCreate(title || defaultTitle, content || defaultContent);
     }
-  }, [note, onSave, title, content, hasChanges]);
+  }, [note, onSave, onCreate, title, content, hasChanges]);
 
   useEffect(() => {
-    if (!note || !hasChanges) return;
+    if (!hasChanges) return;
 
     const saveTimer = setTimeout(() => {
       handleSave();
@@ -70,13 +80,13 @@ const NoteEditor = ({ note, onSave }: Props) => {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         className="note-editor-title"
-        placeholder="New note"
+        placeholder={defaultTitle}
       />
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         className="note-editor-content"
-        placeholder="Start writing..."
+        placeholder={defaultContent}
       />
     </div>
   );
