@@ -1,0 +1,40 @@
+.note-editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.note-editor-title {
+  font-size: 2rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  background: transparent;
+  margin-bottom: 2.5rem;
+  padding: 4rem 4rem 0;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+}
+
+.note-editor-content {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  font-weight: 300;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  padding: 0 4rem 2rem;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+}
+
+.note-editor-title::placeholder,
+.note-editor-content::placeholder {
+  color: #000000;
+  opacity: 0.3;
+}

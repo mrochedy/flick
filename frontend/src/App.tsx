@@ -43,9 +43,7 @@ function NotesApp() {
   return (
     <div className="app-container">
       <Sidebar notes={notes || []} selectedNoteId={selectedNoteId} onNoteSelect={handleNoteSelect} />
-      <div className="main-content">
-        <NoteEditor note={selectedNote} />
-      </div>
+      <NoteEditor note={selectedNote} />
     </div>
   );
 }
