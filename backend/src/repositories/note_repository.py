@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from uuid import UUID
 from typing import List, Optional
 
 from src.models import Note
@@ -12,7 +13,7 @@ class NoteRepository:
     def get_all(self) -> List[Note]:
         return self.db.query(Note).all()
 
-    def get_by_id(self, note_id: int) -> Optional[Note]:
+    def get_by_id(self, note_id: UUID) -> Optional[Note]:
         return self.db.query(Note).filter(Note.id == note_id).first()
 
     def create(self, note: NoteCreate) -> Note:
@@ -22,7 +23,7 @@ class NoteRepository:
         self.db.refresh(db_note)
         return db_note
 
-    def update(self, note_id: int, note: NoteUpdate) -> Optional[Note]:
+    def update(self, note_id: UUID, note: NoteUpdate) -> Optional[Note]:
         db_note = self.get_by_id(note_id)
         if db_note:
             update_data = note.model_dump(exclude_unset=True)
@@ -32,7 +33,7 @@ class NoteRepository:
             self.db.refresh(db_note)
         return db_note
 
-    def delete(self, note_id: int) -> bool:
+    def delete(self, note_id: UUID) -> bool:
         db_note = self.get_by_id(note_id)
         if db_note:
             self.db.delete(db_note)

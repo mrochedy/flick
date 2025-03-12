@@ -4,11 +4,11 @@ import MinimizedNoteContent from "./MinimizedNoteContent";
 import "./MinimizedNote.css";
 
 interface Props {
-  id: number;
+  id: string;
   title: string;
   content: string;
   isSelected: boolean;
-  onSelect: (noteId: number) => void;
+  onSelect: (noteId: string) => void;
 }
 
 function MinimizedNote({ id, title, content, isSelected, onSelect }: Props) {

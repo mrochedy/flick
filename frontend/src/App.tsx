@@ -20,7 +20,7 @@ function App() {
 }
 
 function NotesApp() {
-  const [selectedNoteId, setSelectedNoteId] = useState<number | null>(null);
+  const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
 
   const {
     data: notes,
@@ -66,7 +66,7 @@ function NotesApp() {
   });
 
   const deleteNoteMutation = useMutation({
-    mutationFn: (id: number) => {
+    mutationFn: (id: string) => {
       return db.delete(`/notes/${id}`);
     },
     onSuccess: () => {
@@ -75,7 +75,7 @@ function NotesApp() {
     },
   });
 
-  const handleNoteSelect = (noteId: number) => {
+  const handleNoteSelect = (noteId: string) => {
     setSelectedNoteId(noteId);
   };
 
@@ -87,7 +87,7 @@ function NotesApp() {
     createNoteMutation.mutate({ title, content });
   };
 
-  const handleNoteDelete = (noteId: number) => {
+  const handleNoteDelete = (noteId: string) => {
     deleteNoteMutation.mutate(noteId);
   };
 

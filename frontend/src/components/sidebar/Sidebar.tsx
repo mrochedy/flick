@@ -7,8 +7,8 @@ import "./Sidebar.css";
 
 interface Props {
   notes: Note[];
-  selectedNoteId: number | null;
-  onNoteSelect: (noteId: number) => void;
+  selectedNoteId: string | null;
+  onNoteSelect: (noteId: string) => void;
   onNewNote: () => void;
 }
 

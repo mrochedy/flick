@@ -1,3 +1,4 @@
+from uuid import UUID
 from typing import List, Optional
 from sqlalchemy.orm import Session
 
@@ -13,7 +14,7 @@ class NoteService:
         notes = self.repository.get_all()
         return [NoteInDB.model_validate(note) for note in notes]
 
-    def get_note(self, note_id: int) -> Optional[NoteInDB]:
+    def get_note(self, note_id: UUID) -> Optional[NoteInDB]:
         note = self.repository.get_by_id(note_id)
         if note:
             return NoteInDB.model_validate(note)
@@ -23,11 +24,11 @@ class NoteService:
         created_note = self.repository.create(note)
         return NoteInDB.model_validate(created_note)
 
-    def update_note(self, note_id: int, note: NoteUpdate) -> Optional[NoteInDB]:
+    def update_note(self, note_id: UUID, note: NoteUpdate) -> Optional[NoteInDB]:
         updated_note = self.repository.update(note_id, note)
         if updated_note:
             return NoteInDB.model_validate(updated_note)
         return None
 
-    def delete_note(self, note_id: int) -> bool:
+    def delete_note(self, note_id: UUID) -> bool:
         return self.repository.delete(note_id)

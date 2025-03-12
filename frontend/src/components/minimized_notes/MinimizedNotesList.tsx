@@ -6,8 +6,8 @@ import "./MinimizedNotesList.css";
 
 interface Props {
   notes: Note[];
-  selectedNoteId: number | null;
-  onNoteSelect: (noteId: number) => void;
+  selectedNoteId: string | null;
+  onNoteSelect: (noteId: string) => void;
 }
 
 function MinimizedNotesList({ notes, selectedNoteId, onNoteSelect }: Props) {

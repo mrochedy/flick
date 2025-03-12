@@ -5,12 +5,12 @@ import "./NoteEditorToolbar.css";
 
 interface Props {
   note: Note | null;
-  onDelete: (noteId: number) => void;
+  onDelete: (noteId: string) => void;
 }
 
 function NoteEditorToolbar({ onDelete, note }: Props) {
   const handleDelete = () => {
-    onDelete(note?.id || -1);
+    onDelete(note?.id || "");
   };
 
   return (

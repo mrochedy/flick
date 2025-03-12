@@ -1,5 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel
+from uuid import UUID
 from typing import Optional
 
 
@@ -18,7 +19,7 @@ class NoteUpdate(BaseModel):
 
 
 class NoteInDB(NoteBase):
-    id: int
+    id: UUID
     created_at: datetime
     updated_at: datetime
 

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from uuid import UUID
 from typing import List
 from sqlalchemy.orm import Session
 
@@ -16,7 +17,7 @@ def get_notes(db: Session = Depends(get_db)):
 
 
 @router.get("/{note_id}", response_model=NoteInDB)
-def get_note(note_id: int, db: Session = Depends(get_db)):
+def get_note(note_id: UUID, db: Session = Depends(get_db)):
     service = NoteService(db)
     note = service.get_note(note_id)
     if note is None:
@@ -31,7 +32,7 @@ def create_note(note: NoteCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{note_id}", response_model=NoteInDB)
-def update_note(note_id: int, note: NoteUpdate, db: Session = Depends(get_db)):
+def update_note(note_id: UUID, note: NoteUpdate, db: Session = Depends(get_db)):
     service = NoteService(db)
     updated_note = service.update_note(note_id, note)
     if updated_note is None:
@@ -40,7 +41,7 @@ def update_note(note_id: int, note: NoteUpdate, db: Session = Depends(get_db)):
 
 
 @router.delete("/{note_id}")
-def delete_note(note_id: int, db: Session = Depends(get_db)):
+def delete_note(note_id: UUID, db: Session = Depends(get_db)):
     service = NoteService(db)
     if not service.delete_note(note_id):
         raise HTTPException(status_code=404, detail="Note not found")
