@@ -28,7 +28,14 @@ function NotesApp() {
     error,
   } = useQuery<Note[]>({
     queryKey: ["notes"],
-    queryFn: () => db.get("/notes/").then((res) => res.data.map((note: RawNote) => convertRawNote(note))),
+    queryFn: () =>
+      db
+        .get("/notes/")
+        .then((res) =>
+          res.data
+            .map((note: RawNote) => convertRawNote(note))
+            .sort((a: Note, b: Note) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+        ),
   });
 
   const invalidateNotes = () => {
