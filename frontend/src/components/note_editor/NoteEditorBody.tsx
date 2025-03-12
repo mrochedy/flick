@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 
 import { Note } from "models";
 
-import "./NoteEditor.css";
+import "./NoteEditorBody.css";
 
 interface Props {
   note: Note | null;
@@ -10,7 +10,7 @@ interface Props {
   onCreate: (title: string, content: string) => void;
 }
 
-const NoteEditor = ({ note, onSave, onCreate }: Props) => {
+const NoteEditorBody = ({ note, onSave, onCreate }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [previousNote, setPreviousNote] = useState<Note | null>(null);
@@ -43,10 +43,6 @@ const NoteEditor = ({ note, onSave, onCreate }: Props) => {
       const titleChanged = title !== note.title;
       const contentChanged = content !== note.content;
       setHasChanges(titleChanged || contentChanged);
-    } else {
-      const titleChanged = title !== "";
-      const contentChanged = content !== "";
-      setHasChanges(titleChanged || contentChanged);
     }
   }, [title, content, note]);
 
@@ -58,10 +54,8 @@ const NoteEditor = ({ note, onSave, onCreate }: Props) => {
         content,
       });
       setHasChanges(false);
-    } else if (hasChanges) {
-      onCreate(title || defaultTitle, content || defaultContent);
     }
-  }, [note, onSave, onCreate, title, content, hasChanges]);
+  }, [note, onSave, title, content, hasChanges]);
 
   useEffect(() => {
     if (!hasChanges) return;
@@ -74,17 +68,23 @@ const NoteEditor = ({ note, onSave, onCreate }: Props) => {
   }, [title, content, note, handleSave, hasChanges]);
 
   return (
-    <div className="note-editor">
+    <div className="note-editor-body">
       <input
         type="text"
         value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={(e) => {
+          setTitle(e.target.value);
+          if (!note) onCreate(e.target.value, defaultContent);
+        }}
         className="note-editor-title"
         placeholder={defaultTitle}
       />
       <textarea
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(e) => {
+          setContent(e.target.value);
+          if (!note) onCreate(defaultTitle, e.target.value);
+        }}
         className="note-editor-content"
         placeholder={defaultContent}
       />
@@ -92,4 +92,4 @@ const NoteEditor = ({ note, onSave, onCreate }: Props) => {
   );
 };
 
-export default NoteEditor;
+export default NoteEditorBody;

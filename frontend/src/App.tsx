@@ -5,7 +5,7 @@ import { Note, RawNote, convertRawNote } from "models";
 
 import db from "./db";
 import Sidebar from "./components/Sidebar";
-import NoteEditor from "./components/NoteEditor";
+import NoteEditor from "./components/note_editor/NoteEditor";
 
 import "./App.css";
 
@@ -58,6 +58,16 @@ function NotesApp() {
     },
   });
 
+  const deleteNoteMutation = useMutation({
+    mutationFn: (id: number) => {
+      return db.delete(`/notes/${id}`);
+    },
+    onSuccess: () => {
+      invalidateNotes();
+      setSelectedNoteId(null);
+    },
+  });
+
   const handleNoteSelect = (noteId: number) => {
     setSelectedNoteId(noteId);
   };
@@ -70,6 +80,10 @@ function NotesApp() {
     createNoteMutation.mutate({ title, content });
   };
 
+  const handleNoteDelete = (noteId: number) => {
+    deleteNoteMutation.mutate(noteId);
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -78,7 +92,7 @@ function NotesApp() {
   return (
     <div className="app-container">
       <Sidebar notes={notes || []} selectedNoteId={selectedNoteId} onNoteSelect={handleNoteSelect} />
-      <NoteEditor note={selectedNote} onSave={handleNoteSave} onCreate={handleNoteCreate} />
+      <NoteEditor note={selectedNote} onSave={handleNoteSave} onCreate={handleNoteCreate} onDelete={handleNoteDelete} />
     </div>
   );
 }

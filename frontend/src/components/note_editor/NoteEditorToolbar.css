@@ -1,0 +1,52 @@
+.note-editor-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 2% 5%;
+  background-color: transparent;
+  border: none;
+}
+
+.toolbar-icons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.toolbar-icon {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.toolbar-icon:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.toolbar-icon:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.toolbar-icon:disabled:hover {
+  background-color: transparent;
+}
+
+.delete-icon {
+  color: #ff3b30;
+}
+
+.delete-icon.not-clickable {
+  cursor: default;
+  pointer-events: none;
+}
+
+.delete-icon.not-clickable:hover {
+  background-color: transparent;
+}
