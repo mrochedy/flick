@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Note, RawNote, convertRawNote } from "models";
 
 import db from "./db";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/sidebar/Sidebar";
 import NoteEditor from "./components/note_editor/NoteEditor";
 
 import "./App.css";
@@ -84,6 +84,10 @@ function NotesApp() {
     deleteNoteMutation.mutate(noteId);
   };
 
+  const openNewNote = () => {
+    setSelectedNoteId(null);
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -91,7 +95,12 @@ function NotesApp() {
 
   return (
     <div className="app-container">
-      <Sidebar notes={notes || []} selectedNoteId={selectedNoteId} onNoteSelect={handleNoteSelect} />
+      <Sidebar
+        notes={notes || []}
+        selectedNoteId={selectedNoteId}
+        onNoteSelect={handleNoteSelect}
+        onNewNote={openNewNote}
+      />
       <NoteEditor note={selectedNote} onSave={handleNoteSave} onCreate={handleNoteCreate} onDelete={handleNoteDelete} />
     </div>
   );

@@ -1,5 +1,5 @@
 import { Note } from "models";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash as DeleteIcon } from "react-icons/fa";
 
 import "./NoteEditorToolbar.css";
 
@@ -16,8 +16,13 @@ function NoteEditorToolbar({ onDelete, note }: Props) {
   return (
     <div className="note-editor-toolbar">
       <div className="toolbar-icons">
-        <button className="toolbar-icon delete-icon" onClick={handleDelete} disabled={!note}>
-          <FaTrash size="1.2rem" />
+        <button
+          className="toolbar-icon delete-icon"
+          title="Delete current note"
+          onClick={handleDelete}
+          disabled={!note}
+        >
+          <DeleteIcon size="1.2rem" />
         </button>
       </div>
     </div>
