@@ -13,7 +13,7 @@ function SidebarHeader({ onNewNote }: Props) {
         <div className="logo">Flick</div>
         <div className="new-note-button">
           <button title="Create new note" onClick={onNewNote}>
-            <AddIcon size="1.9rem" />
+            <AddIcon size="1.8rem" />
           </button>
         </div>
       </div>

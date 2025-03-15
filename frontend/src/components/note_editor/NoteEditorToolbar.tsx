@@ -1,5 +1,6 @@
 import { Note } from "models";
 import { FaTrash as DeleteIcon } from "react-icons/fa";
+import { LuClipboardList as HistoryIcon } from "react-icons/lu";
 
 import "./NoteEditorToolbar.css";
 
@@ -16,6 +17,9 @@ function NoteEditorToolbar({ onDelete, note }: Props) {
   return (
     <div className="note-editor-toolbar">
       <div className="toolbar-icons">
+        <button className="toolbar-icon history-icon" title="See note versions history" disabled={!note}>
+          <HistoryIcon size="1.4rem" />
+        </button>
         <button
           className="toolbar-icon delete-icon"
           title="Delete current note"
