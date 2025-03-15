@@ -3,7 +3,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from src.repositories import NoteRepository
-from src.schemas import NoteCreate, NoteUpdate, NoteInDB
+from src.schemas import NoteCreate, NoteUpdate, NoteInDB, NoteHistoryInDB
 
 
 class NoteService:
@@ -32,3 +32,7 @@ class NoteService:
 
     def delete_note(self, note_id: UUID) -> bool:
         return self.repository.delete(note_id)
+
+    def get_note_history(self, note_id: UUID) -> List[NoteHistoryInDB]:
+        history_entries = self.repository.get_note_history(note_id)
+        return [NoteHistoryInDB.model_validate(entry) for entry in history_entries]

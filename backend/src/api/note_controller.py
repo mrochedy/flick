@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.core import get_db
 from src.services import NoteService
-from src.schemas import NoteCreate, NoteUpdate, NoteInDB
+from src.schemas import NoteCreate, NoteUpdate, NoteInDB, NoteHistoryInDB
 
 router = APIRouter(prefix="/notes", tags=["notes"])
 
@@ -23,6 +23,15 @@ def get_note(note_id: UUID, db: Session = Depends(get_db)):
     if note is None:
         raise HTTPException(status_code=404, detail="Note not found")
     return note
+
+
+@router.get("/{note_id}/history", response_model=List[NoteHistoryInDB])
+def get_note_history(note_id: UUID, db: Session = Depends(get_db)):
+    service = NoteService(db)
+    note = service.get_note(note_id)
+    if note is None:
+        raise HTTPException(status_code=404, detail="Note not found")
+    return service.get_note_history(note_id)
 
 
 @router.post("/", response_model=NoteInDB)

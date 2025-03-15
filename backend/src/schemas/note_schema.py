@@ -46,3 +46,14 @@ class NoteInDB(NoteBase):
 
     class Config:
         from_attributes = True
+
+
+class NoteHistoryInDB(BaseModel):
+    id: UUID
+    note_id: UUID
+    title: str
+    content: str
+    version_date: datetime
+
+    class Config:
+        from_attributes = True
