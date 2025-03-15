@@ -1,0 +1,6 @@
+.note-history-list {
+  width: 30%;
+  border-right: 1px solid #eaeaea;
+  overflow-y: auto;
+  padding: 10px;
+}

@@ -27,6 +27,7 @@
     "paths": {
       "models": ["src/models"],
       "models/*": ["src/models/*"],
+      "db": ["src/db"],
       "@/*": ["src/*"]
     }
   },

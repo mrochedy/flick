@@ -1,0 +1,27 @@
+.note-history-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px;
+  border-top: 1px solid #eaeaea;
+}
+
+.restore-version-button {
+  padding: 10px 18px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.85rem;
+  background-color: #000000;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.restore-version-button:hover {
+  background-color: #3e3e3e;
+}
+
+.restore-version-button:disabled {
+  background-color: #818181;
+  cursor: default;
+}

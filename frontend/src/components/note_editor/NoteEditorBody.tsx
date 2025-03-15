@@ -27,7 +27,7 @@ const NoteEditorBody = ({ note, onSave, onCreate }: Props) => {
 
   useEffect(() => {
     if (note?.id !== previousNote?.id) {
-      if (previousNote && previousNote.id !== null) {
+      if (hasChanges && previousNote && previousNote.id !== null) {
         onSave({
           ...previousNote,
           title,
@@ -36,7 +36,7 @@ const NoteEditorBody = ({ note, onSave, onCreate }: Props) => {
       }
       setPreviousNote(note);
     }
-  }, [note, previousNote, onSave, title, content]);
+  }, [note, previousNote, onSave, title, content, hasChanges]);
 
   useEffect(() => {
     if (note) {

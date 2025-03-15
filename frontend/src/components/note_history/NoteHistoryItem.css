@@ -1,0 +1,39 @@
+.note-history-item {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.note-history-item:hover {
+  background-color: #f5f5f5;
+}
+
+.note-history-item.selected {
+  background-color: #d4d4d4;
+}
+
+.note-history-item.current {
+  background-color: #484848;
+  color: white;
+}
+
+.note-history-item.current:hover {
+  background-color: #5a5a5a;
+}
+
+.note-history-item.current.selected {
+  background-color: #242424;
+}
+
+.note-history-item-title {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.note-history-item-date {
+  font-weight: 200;
+  font-size: 0.8rem;
+}

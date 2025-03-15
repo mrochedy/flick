@@ -1,0 +1,24 @@
+.note-history-preview {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.note-history-preview-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+}
+
+.note-history-preview-content {
+  font-size: 1rem;
+  font-weight: 200;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  flex: 1;
+  overflow-y: auto;
+}

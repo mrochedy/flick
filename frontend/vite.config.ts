@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'models': '/src/models',
+      'db': '/src/db',
       '@': '/src'
     }
   }

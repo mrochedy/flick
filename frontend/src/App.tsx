@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Note, RawNote, convertRawNote } from "models";
 
-import db from "./db";
+import db from "db";
 import Sidebar from "./components/sidebar/Sidebar";
 import NoteEditor from "./components/note_editor/NoteEditor";
 

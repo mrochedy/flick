@@ -22,4 +22,4 @@ export const convertRawNote = (rawNote: RawNote): Note => {
     createdAt: rawNote.created_at,
     updatedAt: rawNote.updated_at
   };
-}; 
+};

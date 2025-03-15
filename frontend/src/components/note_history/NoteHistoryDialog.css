@@ -1,0 +1,41 @@
+.note-history-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.note-history-dialog {
+  background-color: white;
+  border-radius: 8px;
+  width: 65vw;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.note-history-dialog-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.loading,
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.error {
+  color: #ff0000;
+}
