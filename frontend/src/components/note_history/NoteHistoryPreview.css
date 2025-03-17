@@ -22,3 +22,20 @@
   flex: 1;
   overflow-y: auto;
 }
+
+.diff-line {
+  min-height: 1.8rem;
+}
+
+.diff-line.added {
+  background-color: rgba(0, 255, 0, 0.2);
+}
+
+.diff-line.removed {
+  background-color: rgba(255, 0, 0, 0.2);
+  text-decoration: line-through;
+}
+
+.diff-line.unchanged {
+  background-color: transparent;
+}
