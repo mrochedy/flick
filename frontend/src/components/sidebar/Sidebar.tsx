@@ -1,7 +1,5 @@
 import { Note } from "models";
-
-import SidebarContent from "./SidebarContent";
-import SidebarHeader from "./SidebarHeader";
+import { SidebarContent, SidebarHeader } from "components";
 
 import "./Sidebar.css";
 

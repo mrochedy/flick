@@ -2,10 +2,9 @@ import { QueryClient, QueryClientProvider, useQuery, useMutation } from "@tansta
 import { useState } from "react";
 
 import { Note, RawNote, convertRawNote } from "models";
+import { Sidebar, NoteEditor } from "components";
 
 import db from "db";
-import Sidebar from "./components/sidebar/Sidebar";
-import NoteEditor from "./components/note_editor/NoteEditor";
 
 import "./App.css";
 

@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
 
 import { Note, NoteHistory, RawNoteHistory, convertRawNoteHistory } from "models";
+import { NoteHistoryHeader, NoteHistoryPreview, NoteHistoryList, NoteHistoryFooter } from "components";
 
-import NoteHistoryHeader from "../note_history/NoteHistoryHeader";
-import NoteHistoryPreview from "../note_history/NoteHistoryPreview";
-import NoteHistoryList from "../note_history/NoteHistoryList";
-import NoteHistoryFooter from "../note_history/NoteHistoryFooter";
 import db from "db";
 
 import "./NoteHistoryDialog.css";

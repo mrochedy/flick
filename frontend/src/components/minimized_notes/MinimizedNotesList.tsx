@@ -1,6 +1,5 @@
 import { Note } from "models";
-
-import MinimizedNote from "./MinimizedNote";
+import { MinimizedNote } from "components";
 
 import "./MinimizedNotesList.css";
 

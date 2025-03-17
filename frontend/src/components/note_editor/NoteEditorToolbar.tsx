@@ -1,10 +1,9 @@
+import { useState } from "react";
 import { FaTrash as DeleteIcon } from "react-icons/fa";
 import { LuClipboardList as HistoryIcon } from "react-icons/lu";
-import { useState } from "react";
 
 import { Note } from "models";
-
-import NoteHistoryDialog from "../note_history/NoteHistoryDialog";
+import { NoteHistoryDialog } from "components";
 
 import "./NoteEditorToolbar.css";
 

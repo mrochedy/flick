@@ -1,6 +1,5 @@
 import { NoteHistory } from "models";
-
-import NoteHistoryItem from "./NoteHistoryItem";
+import { NoteHistoryItem } from "components";
 
 import "./NoteHistoryList.css";
 

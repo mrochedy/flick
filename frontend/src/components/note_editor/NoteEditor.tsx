@@ -1,7 +1,6 @@
 import { Note } from "models";
 
-import NoteEditorBody from "./NoteEditorBody";
-import NoteEditorToolbar from "./NoteEditorToolbar";
+import { NoteEditorBody, NoteEditorToolbar } from "components";
 
 import "./NoteEditor.css";
 

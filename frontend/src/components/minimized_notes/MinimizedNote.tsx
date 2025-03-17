@@ -1,5 +1,4 @@
-import MinimizedNoteTitle from "./MinimizedNoteTitle";
-import MinimizedNoteContent from "./MinimizedNoteContent";
+import { MinimizedNoteContent, MinimizedNoteTitle } from "components";
 
 import "./MinimizedNote.css";
 
