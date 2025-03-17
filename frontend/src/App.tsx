@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider, useQuery, useMutation } from "@tansta
 import { useState } from "react";
 
 import { Note, RawNote, convertRawNote } from "models";
-import { Sidebar, NoteEditor } from "components";
+import { Sidebar, NoteEditor, Loader, ErrorDisplay } from "components";
 
 import db from "db";
 
@@ -94,20 +94,30 @@ function NotesApp() {
     setSelectedNoteId(null);
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
   const selectedNote = notes?.find((note) => note.id === selectedNoteId) || null;
 
   return (
     <div className="app-container">
-      <Sidebar
-        notes={notes || []}
-        selectedNoteId={selectedNoteId}
-        onNoteSelect={handleNoteSelect}
-        onNewNote={openNewNote}
-      />
-      <NoteEditor note={selectedNote} onSave={handleNoteSave} onCreate={handleNoteCreate} onDelete={handleNoteDelete} />
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <ErrorDisplay message={error.message} />
+      ) : (
+        <>
+          <Sidebar
+            notes={notes || []}
+            selectedNoteId={selectedNoteId}
+            onNoteSelect={handleNoteSelect}
+            onNewNote={openNewNote}
+          />
+          <NoteEditor
+            note={selectedNote}
+            onSave={handleNoteSave}
+            onCreate={handleNoteCreate}
+            onDelete={handleNoteDelete}
+          />
+        </>
+      )}
     </div>
   );
 }

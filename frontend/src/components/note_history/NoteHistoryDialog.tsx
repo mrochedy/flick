@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 
 import { Note, NoteHistory, RawNoteHistory, convertRawNoteHistory } from "models";
-import { NoteHistoryHeader, NoteHistoryPreview, NoteHistoryList, NoteHistoryFooter } from "components";
+import {
+  NoteHistoryHeader,
+  NoteHistoryPreview,
+  NoteHistoryList,
+  NoteHistoryFooter,
+  ErrorDisplay,
+  Loader,
+} from "components";
 
 import db from "db";
 
@@ -16,13 +23,13 @@ interface Props {
 
 function NoteHistoryDialog({ note, isOpen, onClose, onRestoreVersion }: Props) {
   const [history, setHistory] = useState<NoteHistory[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen && note) {
-      setLoading(true);
+      setIsLoading(true);
       setError(null);
 
       db.get(`/notes/${note.id}/history`)
@@ -31,12 +38,11 @@ function NoteHistoryDialog({ note, isOpen, onClose, onRestoreVersion }: Props) {
           setHistory(historyItems);
           setSelectedVersionId(historyItems[0].id);
         })
-        .catch((err) => {
-          console.error("Error fetching note history:", err);
+        .catch(() => {
           setError("Failed to load note history. Please try again.");
         })
         .finally(() => {
-          setLoading(false);
+          setIsLoading(false);
         });
     }
   }, [isOpen, note]);
@@ -58,10 +64,10 @@ function NoteHistoryDialog({ note, isOpen, onClose, onRestoreVersion }: Props) {
       <div className="note-history-dialog">
         <NoteHistoryHeader />
         <div className="note-history-dialog-body">
-          {loading ? (
-            <div className="loading">Loading history...</div>
+          {isLoading ? (
+            <Loader />
           ) : error ? (
-            <div className="error">{error}</div>
+            <ErrorDisplay message={error} />
           ) : (
             <>
               <NoteHistoryList
