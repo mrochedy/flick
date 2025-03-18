@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 import { Note } from "models";
 
@@ -19,53 +19,85 @@ const NoteEditorBody = ({ note, onSave, onCreate }: Props) => {
   const defaultTitle = "New note";
   const defaultContent = "Start writing...";
 
+  const noteRef = useRef(note);
+  const previousNoteRef = useRef(previousNote);
+  const titleRef = useRef(title);
+  const contentRef = useRef(content);
+  const hasChangesRef = useRef(hasChanges);
+  const onSaveRef = useRef(onSave);
+
   useEffect(() => {
-    setTitle(note?.title || "");
-    setContent(note?.content || "");
-    setHasChanges(false);
+    noteRef.current = note;
+    previousNoteRef.current = previousNote;
+    titleRef.current = title;
+    contentRef.current = content;
+    hasChangesRef.current = hasChanges;
+    onSaveRef.current = onSave;
+  }, [note, previousNote, title, content, hasChanges, onSave]);
+
+  useEffect(() => {
+    updateNoteTitleAndContentWhenNoteChanges();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [note]);
 
+  const updateNoteTitleAndContentWhenNoteChanges = useCallback(() => {
+    setTitle(noteRef.current?.title || "");
+    setContent(noteRef.current?.content || "");
+    setHasChanges(false);
+  }, []);
+
   useEffect(() => {
-    if (note?.id !== previousNote?.id) {
-      if (hasChanges && previousNote && previousNote.id !== null) {
-        onSave({
-          ...previousNote,
-          title,
-          content,
+    saveCurrentNoteWhenNoteChanges();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [note]);
+
+  const saveCurrentNoteWhenNoteChanges = useCallback(() => {
+    if (noteRef.current?.id !== previousNoteRef.current?.id) {
+      if (hasChangesRef.current && previousNoteRef.current && previousNoteRef.current.id !== null) {
+        onSaveRef.current({
+          ...previousNoteRef.current,
+          title: titleRef.current,
+          content: contentRef.current,
         });
       }
-      setPreviousNote(note);
+      setPreviousNote(noteRef.current);
     }
-  }, [note, previousNote, onSave, title, content, hasChanges]);
+  }, []);
 
   useEffect(() => {
-    if (note) {
-      const titleChanged = title !== note.title;
-      const contentChanged = content !== note.content;
+    detectChangesInNoteTitleOrContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, content]);
+
+  const detectChangesInNoteTitleOrContent = useCallback(() => {
+    if (noteRef.current && !hasChangesRef.current) {
+      const titleChanged = titleRef.current !== noteRef.current.title;
+      const contentChanged = contentRef.current !== noteRef.current.content;
       setHasChanges(titleChanged || contentChanged);
     }
-  }, [title, content, note]);
-
-  const handleSave = useCallback(() => {
-    if (note && hasChanges) {
-      onSave({
-        ...note,
-        title,
-        content,
-      });
-      setHasChanges(false);
-    }
-  }, [note, onSave, title, content, hasChanges]);
+  }, []);
 
   useEffect(() => {
-    if (!hasChanges) return;
+    return handleAutoSaveAfterTimeout(1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [title, content]);
+
+  const handleAutoSaveAfterTimeout = useCallback((timeoutInMs: number) => {
+    if (!noteRef.current) return;
 
     const saveTimer = setTimeout(() => {
-      handleSave();
-    }, 1000);
+      if (noteRef.current && hasChangesRef.current) {
+        onSaveRef.current({
+          ...noteRef.current,
+          title: titleRef.current,
+          content: contentRef.current,
+        });
+        setHasChanges(false);
+      }
+    }, timeoutInMs);
 
     return () => clearTimeout(saveTimer);
-  }, [title, content, note, handleSave, hasChanges]);
+  }, []);
 
   return (
     <div className="note-editor-body">
